@@ -5,4 +5,4 @@ def run_streamlit_app(script_path):
 
 if __name__ == "__main__":
     # Because root is Gen_AI:
-    run_streamlit_app("ui/RAG.py")
+    run_streamlit_app("ui/page1.py")
