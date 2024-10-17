@@ -1,8 +1,7 @@
 import streamlit as st
-from utils import rag
+from utils import rag_aws
 
-
-st.title("Question & Answering Bot")
+st.title("Quantum Computing Bot")
 st.write('Enter a Question:  ')
 
 if "rag_messages" not in st.session_state:
@@ -22,7 +21,7 @@ if prompt := st.chat_input(placeholder="Enter your prompt."):
         st.markdown(prompt)
 
     with st.chat_message("assistant"):
-        response = rag.qa_chain.invoke(prompt)
+        response = rag_aws.aws_chain(prompt)
         st.markdown(response)
 
     assistant_message = {"role" : "assistant", "content" : response}

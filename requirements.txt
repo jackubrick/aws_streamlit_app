@@ -1,16 +1,12 @@
+#uv pip install langchain-openai langchain langchain-chroma langchain-community streamlit requests chromadb unstructured python-docx boto3
+#pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 langchain-openai
 langchain
 langchain-chroma
 langchain-community
 streamlit
-pandas
-numpy
-wonderwords
-beautifulsoup4
 requests
-sentence_transformers
 chromadb
 unstructured
 python-docx
 boto3
-#pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118

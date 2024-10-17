@@ -35,31 +35,32 @@ vectorstore = Chroma(persist_directory=VECTOR_DB_CACHE, embedding_function=embed
 
 retriever = vectorstore.as_retriever(k=5)
 
-query = "What is quantum computing?"
-# query = "What is an apple?"
-retrieved_docs = retriever.invoke(query)
 
-context = "\n".join([doc.page_content for doc in retrieved_docs])
-full_prompt = f"""YOU MUST USE THE INFORMATION IN THE CONTEXT to answer the question. If you don't know the answer, just say that you don't know.
-Context:\n{context}\n\nQuestion: {query}"""
+def aws_chain(query):
 
-request_body = {
-    "inputText": full_prompt,
-    "textGenerationConfig": {
-        "maxTokenCount": 500,
-        "temperature": 0.0
+    retrieved_docs = retriever.invoke(query)
+
+    context = "\n".join([doc.page_content for doc in retrieved_docs])
+    full_prompt = f"""YOU MUST USE THE INFORMATION IN THE CONTEXT to answer the question. If you don't know the answer, just say that you don't know.
+    Context:\n{context}\n\nQuestion: {query}"""
+
+    request_body = {
+        "inputText": full_prompt,
+        "textGenerationConfig": {
+            "maxTokenCount": 500,
+            "temperature": 0.0
+        }
     }
-}
 
-client = boto3.client('bedrock-runtime', region_name='us-east-1')
-request_json = json.dumps(request_body)
+    client = boto3.client('bedrock-runtime', region_name='us-east-1')
+    request_json = json.dumps(request_body)
 
-response = client.invoke_model(
-    modelId="amazon.titan-text-lite-v1",
-    body=request_json
-)
+    response = client.invoke_model(
+        modelId="amazon.titan-text-lite-v1",
+        body=request_json
+    )
 
-response_body = json.loads(response['body'].read())
-output_text = response_body["results"][0]["outputText"]
+    response_body = json.loads(response['body'].read())
+    output_text = response_body["results"][0]["outputText"]
 
-print(output_text)
+    return output_text
